@@ -1,0 +1,33 @@
+{
+  "name": "html_replacer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.19",
+    "@vue/cli-plugin-vuex": "~4.5.19",
+    "@vue/cli-service": "~4.5.19",
+    "autoprefixer": "^9.8.8",
+    "electron": "^13.0.0",
+    "electron-devtools-installer": "^3.1.0",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "vue-cli-plugin-electron-builder": "^2.1.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "_id": "html_replacer@0.1.0",
+  "readme": "ERROR: No README data found!"
+}
