@@ -25,7 +25,8 @@ export default {
   methods: {
     handleSelectDocumentClick() {
       electron.getHTML().then(res => {
-        this.$store.commit('setHTML', res)
+        this.$store.commit('setHTML', res.html)
+        this.$store.commit('setName', res.fileName)
       })
     }
   }

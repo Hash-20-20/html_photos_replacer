@@ -3,6 +3,9 @@ import App from './App.vue'
 import store from './store'
 import './index.css'
 
+import toast from '@/plugins/toast'
+Vue.use(toast)
+
 Vue.config.productionTip = false
 
 new Vue({

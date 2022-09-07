@@ -26,7 +26,8 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
       preload: path.join(__dirname, 'preload.js'),
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      webSecurity:false
     }
   })
 
