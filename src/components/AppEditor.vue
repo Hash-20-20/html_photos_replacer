@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import {getToken} from "@/network/wxUpload";
+
 export default {
   name: "AppEditor",
   methods: {
@@ -42,8 +44,25 @@ export default {
     },
     handleExportHtml() {
       if (this.$store.getters.hasFileName) {
-        electron.saveHtml(this.$store.getters.getHtmlObjInnerHtml, `${this.$store.state.fileName}-换图-v.${this.$store.state.version}.html`)
-        this.$store.commit('versionIncrement')
+        getToken().then(api => {
+          this.$toast.show('正在上传图片到微信服务器')
+          const token = api.access_token
+
+          Promise.all(this.$store.getters.getLocalPhotosNoRepeat.map(item => {
+            return electron.addMaterial(token, item.url)
+          })).then(resArr => {
+            this.$toast.show('图片已全部上传，保存到本地...')
+
+            Promise.all(resArr.map(item => {
+              return this.$store.dispatch('replaceUrl', {oldUrl: item.oldUrl, newUrl: item.data.url})
+            })).then(() => {
+              electron.saveHtml(this.$store.getters.getHtmlObjInnerHtml, `${this.$store.state.fileName}-换图-v.${this.$store.state.version}.html`)
+              this.$store.commit('versionIncrement')
+            })
+          })
+        }).catch(err => {
+          electron.showMessage(err.message)
+        })
       } else
         electron.showMessage('请先选择文档')
     }

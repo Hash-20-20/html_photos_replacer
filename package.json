@@ -12,8 +12,10 @@
   },
   "main": "background.js",
   "dependencies": {
+    "axios": "^0.27.2",
     "core-js": "^3.6.5",
     "image-size": "^1.0.2",
+    "request": "^2.88.2",
     "vue": "^2.6.11",
     "vuex": "^3.4.0"
   },

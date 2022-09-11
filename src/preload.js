@@ -3,6 +3,7 @@ const {dialog} = require('electron').remote
 const path = require('path')
 const fs = require('fs')
 const sizeOf = require('image-size')
+const request = require('request')
 
 const UNIT_MB = 1024 ** 2
 
@@ -11,7 +12,8 @@ contextBridge.exposeInMainWorld('electron', {
   showOpenDialogByPhoto,
   getPhotoFileSize,
   showMessage,
-  saveHtml
+  saveHtml,
+  addMaterial
 })
 
 function showOpenDialogByHTML() {
@@ -108,5 +110,27 @@ function saveFile(savePath, saveContent) {
 
       resolve(data)
     })
+  })
+}
+
+function addMaterial(token, url) {
+  return new Promise((resolve, reject) => {
+    const addMaterialUrl = `https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${token}&type=image`
+
+    const config = {
+      url: addMaterialUrl,
+      formData: {
+        media: fs.createReadStream(url.slice(7))
+      }
+    }
+
+    const callback = (err, res, body) => {
+      if (err) reject(err)
+
+      const data = JSON.parse(body)
+      resolve({data, oldUrl: url})
+    }
+
+    request.post(config, callback)
   })
 }

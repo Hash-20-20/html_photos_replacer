@@ -22,6 +22,13 @@ export default new Vuex.Store({
         return {url: item, size: state.photos.find(photo => photo.url === item).size}
       })
     },
+    getLocalPhotosNoRepeat(state) {
+      const urls = state.photos.map(item => item.url).filter(item => item.indexOf('file://') !== -1)
+      const newUrls = Array.from(new Set(urls))
+      return newUrls.map(item => {
+        return {url: item, size: state.photos.find(photo => photo.url === item).size}
+      })
+    },
     getHtmlObjInnerHtml(state) {
       return state.htmlObj.innerHTML
     }
@@ -81,6 +88,27 @@ export default new Vuex.Store({
           resolve(isSameSize)
         }
       }))
+    },
+    replaceUrl(context, payload) {
+      return new Promise(resolve => {
+        const photos = context.state.photos.filter(item => item.url === payload.oldUrl)
+
+        for (let i=0; i<photos.length; i++) {
+          photos[i].url = payload.newUrl
+          photos[i].size = 0
+
+          switch (photos[i].tag) {
+            case 'img':
+              photos[i].obj.src = payload.newUrl
+              break
+            case 'svg':
+              photos[i].obj.style.backgroundImage = `url(\"${payload.newUrl}\")`
+              break
+          }
+        }
+
+        resolve()
+      })
     }
   },
   modules: {
