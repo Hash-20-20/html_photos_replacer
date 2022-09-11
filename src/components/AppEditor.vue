@@ -45,7 +45,7 @@ export default {
     handleExportHtml() {
       if (this.$store.getters.hasFileName) {
         getToken().then(api => {
-          this.$toast.show('正在上传图片到微信服务器')
+          this.$toast.show('正在上传图片到微信服务器', 9999 * 1000)
           const token = api.access_token
 
           Promise.all(this.$store.getters.getLocalPhotosNoRepeat.map(item => {

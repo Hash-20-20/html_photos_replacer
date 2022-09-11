@@ -95,7 +95,7 @@ export default new Vuex.Store({
 
         for (let i=0; i<photos.length; i++) {
           photos[i].url = payload.newUrl
-          photos[i].size = 0
+          photos[i].size = {width: 0, height: 0}
 
           switch (photos[i].tag) {
             case 'img':
