@@ -66,7 +66,7 @@ export default new Vuex.Store({
         if (payload.newSize.storageByMB >= 10) {
           reject()  // 超过10MB
         } else {
-          const fileUrl = `file://${payload.newUrl}`
+          const fileUrl = `file://${payload.newUrl.replaceAll('\\', '/')}`
           const photos = context.state.photos.filter(item => item.url === payload.oldUrl)
           const {width, height} = photos[0].size
           const isSameSize = width === payload.newSize.width && height === payload.newSize.height
