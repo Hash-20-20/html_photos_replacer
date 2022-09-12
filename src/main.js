@@ -5,6 +5,8 @@ import './index.css'
 
 import toast from '@/plugins/toast'
 Vue.use(toast)
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false
 

@@ -51,14 +51,27 @@ export default {
           Promise.all(this.$store.getters.getLocalPhotosNoRepeat.map(item => {
             return electron.addMaterial(token, item.url)
           })).then(resArr => {
-            this.$toast.show('图片已全部上传，保存到本地...')
+            const isSuccess = resArr.every(item => item.data.url)
+            if (isSuccess) {
+              this.$toast.show('图片已全部上传，保存到本地...')
 
-            Promise.all(resArr.map(item => {
-              return this.$store.dispatch('replaceUrl', {oldUrl: item.oldUrl, newUrl: item.data.url})
-            })).then(() => {
-              electron.saveHtml(this.$store.getters.getHtmlObjInnerHtml, `${this.$store.state.fileName}-换图-v.${this.$store.state.version}.html`)
-              this.$store.commit('versionIncrement')
-            })
+              Promise.all(resArr.map(item => {
+                return this.$store.dispatch('replaceUrl', {oldUrl: item.oldUrl, newUrl: item.data.url})
+              })).then(() => {
+                const html = this.$store.getters.getHtmlObjInnerHtml
+
+                electron.saveHtml(html, `${this.$store.state.fileName}-换图-v.${this.$store.state.version}.html`).then(() => {
+                  this.$copyText(html).then(() => {
+                    this.$toast.show('保存成功，已复制到剪贴板', 3000)
+                  })
+
+                  this.$store.commit('versionIncrement')
+                })
+              })
+            } else {
+              electron.showMessage('请检查网络是否通畅、AppID与AppSecret是否配置正确、是否已添加IP白名单')
+              this.$toast.show('', 0)
+            }
           })
         }).catch(err => {
           electron.showMessage(err.message)
