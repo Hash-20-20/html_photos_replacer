@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const APP_ID = 'wx38ae2537fc91ef3a'
-const APP_SECRET = '8b433f04be204ce720acdaa48b60e8db'
+const APP_ID = ''
+const APP_SECRET = ''
 
 axios.interceptors.response.use(res => res.data)
 
